@@ -11,11 +11,8 @@ export class PostsController {
     }
 
     @Get()
-    index(@Headers() headers){
-        console.log(headers)
-        return [{
-            title:'hello~'
-        }]
+    index(){
+      return this.demoService.findAll();
     }
 
     @Get(`:id`)
@@ -27,6 +24,6 @@ export class PostsController {
 
     @Post()
     store(@Body() post:CreatePostDto){
-        console.log(post.title)
+        this.demoService.create(post);
     }
 }
