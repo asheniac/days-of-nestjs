@@ -1,8 +1,10 @@
-import { Controller, Get, Req, Query, Headers, Param, Post, Body } from '@nestjs/common';
+import { Controller, Get, Req, Query, Headers, Param, Post, Body, HttpException, HttpStatus, ForbiddenException, UseFilters } from '@nestjs/common';
 import { CreatePostDto } from './post.dto';
 import { DemoService } from './provider/demo/demo.service';
+import { DemoFilter } from '../../core/filters/demo.filter';
 
 @Controller('posts')
+@UseFilters(DemoFilter)
 export class PostsController {
     //private readonly demoService;
 
@@ -23,7 +25,10 @@ export class PostsController {
     }
 
     @Post()
+    
     store(@Body() post:CreatePostDto){
-        this.demoService.create(post);
+        //this.demoService.create(post);
+        //throw new HttpException('access is unavailable',HttpStatus.FORBIDDEN)
+        throw new ForbiddenException('Cant access')
     }
 }
