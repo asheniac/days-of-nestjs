@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Query, Headers, Param, Post, Body, HttpException, HttpStatus, ForbiddenException, UseFilters } from '@nestjs/common';
+import { Controller, Get, Req, Query, Headers, Param, Post, Body, HttpException, HttpStatus, ForbiddenException, UseFilters, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreatePostDto } from './post.dto';
 import { DemoService } from './provider/demo/demo.service';
 import { DemoFilter } from '../../core/filters/demo.filter';
@@ -17,18 +17,19 @@ export class PostsController {
       return this.demoService.findAll();
     }
 
-    @Get(`:id`)
-    show(@Param() params){
+    @Get(':id')
+    show(@Param('id') id){
+        console.log('id',typeof id);
         return{
-            title:`Post ${params.id}`
+            title:`Post ${id}`
         }
     }
 
     @Post()
-    
+    @UsePipes(ValidationPipe)
     store(@Body() post:CreatePostDto){
-        //this.demoService.create(post);
+        this.demoService.create(post);
         //throw new HttpException('access is unavailable',HttpStatus.FORBIDDEN)
-        throw new ForbiddenException('Cant access')
+        //throw new ForbiddenException('Cant access')
     }
 }
